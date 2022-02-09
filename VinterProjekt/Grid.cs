@@ -7,7 +7,7 @@ public class Grid
 {
     public int time;
     public List<Piece> deadPieceList = new List<Piece>();
-    //0 = unoccupied space, 1 = temporarily occupied space, 2 = permanent occupied space
+    //0 = unoccupied space, 1 = occupied space, 2 = temporary occupied space
     int[,] gridArr = new int[,] {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -34,8 +34,28 @@ public class Grid
 
     public void Update(Piece p)
     {
-        time++;
+        for (int i = 0; i < gridArr.GetLength(0); i++)
+        {
+            for (int j = 0; j < gridArr.GetLength(1); j++)
+            {
+                if (gridArr[i, j] == 2)
+                {
+                    gridArr[i, j] = 0;
+                }
+            }
+        }
+        for (int i = 0; i < p.shape.GetLength(0); i++)
+        {
+            for (int j = 0; j < p.shape.GetLength(1); j++)
+            {
+                if (p.shape[i, j] == 1)
+                {
+                    gridArr[p.y + i, p.x + j] = 2;
+                }
+            }
+        }
 
+        time++;
         if (time == 30)
         {
             p.y++;
@@ -70,49 +90,36 @@ public class Grid
 
     public bool PieceCollision(Piece currP)
     {
-        for (int i = 0; i < deadPieceList.Count; i++)
+        for (int i = 0; i < gridArr.GetLength(0); i++)
         {
-            if (currP.y - 200 / 32 + currP.shape.GetLength(0) == deadPieceList[i].y - 200 / 32)
+            for (int j = 0; j < gridArr.GetLength(1); j++)
             {
-                if (currP.x - 200 / 32 == deadPieceList[i].x - 200 / 32)
+                if (gridArr[i, j] == 2)
                 {
-                    deadPieceList.Add(currP);
-                    UpdateGrid(currP);
-                    return true;
+                    if (gridArr[i + 1, j] == 1)
+                    {
+                        deadPieceList.Add(currP);
+                        UpdateGrid(currP);
+                        return true;
+                    }
                 }
             }
         }
         return false;
-        // for (int i = 0; i < currP.shape.GetLength(0); i++)
+        // for (int i = 0; i < deadPieceList.Count; i++)
         // {
-        //     for (int j = 0; j < currP.shape.GetLength(1); j++)
+        //     if (currP.y + currP.shape.GetLength(0) == deadPieceList[i].y)
         //     {
-        //         if (currP.shape[i, j] == 1)
+        //         if (currP.x == deadPieceList[i].x)
         //         {
-        //             for (int a = 0; a < deadPieceList.Count; a++)
-        //             {
-        //                 for (int k = 0; k < deadPieceList[a].shape.GetLength(0); k++)
-        //                 {
-        //                     for (int l = 0; l < deadPieceList[a].shape.GetLength(1); l++)
-        //                     {
-        //                         if (deadPieceList[a].shape[i, j] == 1)
-        //                         {
-        //                             // if (collision)
-        //                             // {
-        //                             //     deadPieceList.Add(currP);
-        //                             //     UpdateGrid(currP);
-        //                             //     return true;
-        //                             // }
-
-        //                         }
-
-        //                     }
-        //                 }
-        //             }
+        //             deadPieceList.Add(currP);
+        //             UpdateGrid(currP);
+        //             return true;
         //         }
         //     }
         // }
         // return false;
+
     }
 
     public void DrawDeadPieces()
