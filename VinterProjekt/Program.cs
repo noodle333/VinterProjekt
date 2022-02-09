@@ -21,17 +21,12 @@ while (!Raylib.WindowShouldClose())
     currentPiece.Movement();
     grid.Update(currentPiece);
 
-    if (grid.GridCollision(currentPiece))
+    if (grid.GridCollision(currentPiece) || grid.PieceCollision(currentPiece))
     {
         currentPiece = ph.GetRandomPiece();
     }
 
     grid.DrawDeadPieces();
-    if (grid.PieceCollision(currentPiece))
-    {
-        currentPiece = ph.GetRandomPiece();
-    }
-
     Raylib.EndDrawing();
 }
 

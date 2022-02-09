@@ -55,6 +55,15 @@ public class Grid
             }
         }
 
+        for (int i = 0; i < gridArr.GetLength(0); i++)
+        {
+            for (int j = 0; j < gridArr.GetLength(1); j++)
+            {
+                Console.Write(gridArr[i, j]);
+            }
+            Console.WriteLine();
+        }
+
         time++;
         if (time == 30)
         {
@@ -71,7 +80,7 @@ public class Grid
             {
                 if (p.shape[i, j] == 1)
                 {
-                    gridArr[i, j] = 1;
+                    gridArr[p.y + i, p.x + j] = 1;
                 }
             }
         }
@@ -106,20 +115,6 @@ public class Grid
             }
         }
         return false;
-        // for (int i = 0; i < deadPieceList.Count; i++)
-        // {
-        //     if (currP.y + currP.shape.GetLength(0) == deadPieceList[i].y)
-        //     {
-        //         if (currP.x == deadPieceList[i].x)
-        //         {
-        //             deadPieceList.Add(currP);
-        //             UpdateGrid(currP);
-        //             return true;
-        //         }
-        //     }
-        // }
-        // return false;
-
     }
 
     public void DrawDeadPieces()
