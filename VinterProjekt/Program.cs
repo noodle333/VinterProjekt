@@ -10,6 +10,8 @@ Raylib.SetTargetFPS(60);
 
 Piece currentPiece = ph.GetRandomPiece();
 
+//TODO Graphics, Clear Line, Score system
+
 while (!Raylib.WindowShouldClose())
 {
 
@@ -18,7 +20,7 @@ while (!Raylib.WindowShouldClose())
     Raylib.DrawRectangle(200, 200, 416, 640, Color.WHITE);
     // grid.DrawGrid();
     currentPiece.DrawPiece();
-    currentPiece.Movement();
+    currentPiece.Movement(grid);
     grid.Update(currentPiece);
 
     if (grid.GridCollision(currentPiece) || grid.PieceCollision(currentPiece))

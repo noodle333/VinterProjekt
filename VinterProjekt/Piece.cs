@@ -1,8 +1,6 @@
 using System;
 using Raylib_cs;
 
-
-//TODO Piece x dependant on grid. (x = 2 -> grid[2] then convert on use x *= 32 +)
 public class Piece
 {
     public int x, y;
@@ -11,17 +9,17 @@ public class Piece
     public Rectangle rec;
 
 
-    public void Movement()
+    public void Movement(Grid grid)
     {
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_A) && x > 0)
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_A) && x > 0 && grid.IsLeftPositionValid())
         {
             x -= 1;
         }
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_D) && x < 13 - shape.GetLength(1))
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_D) && x < 13 - shape.GetLength(1) && grid.IsRightPositionValid()) //&& grid.IsPositionValid())
         {
             x += 1;
         }
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_S))
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_S)) //is valid?
         {
             y += 1;
         }
