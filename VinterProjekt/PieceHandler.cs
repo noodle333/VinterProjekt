@@ -58,9 +58,11 @@ public class PieceHandler
         {
             x = 6,
             y = 0,
-            shape = arr[gen.Next(arr.Count)]
+            // shape = arr[gen.Next(arr.Count)]
+            shape = pieceList["I"]
         };
 
         return ranPiece;
+        // return pieceList["I"];
     }
 }

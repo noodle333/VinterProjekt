@@ -6,7 +6,7 @@ using Raylib_cs;
 public class Grid
 {
     public int time;
-    public List<Piece> deadPieceList = new List<Piece>();
+    // public List<Piece> deadPieceList = new List<Piece>();
     //0 = unoccupied space, 1 = occupied space, 2 = temporary occupied space
     int[,] gridArr = new int[,] {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -29,14 +29,19 @@ public class Grid
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-
     };
 
+    int gridMaxX, gridMaxY;
+    public Grid()
+    {
+        gridMaxX = gridArr.GetLength(1);
+        gridMaxY = gridArr.GetLength(0);
+    }
     public void Update(Piece p)
     {
-        for (int i = 0; i < gridArr.GetLength(0); i++)
+        for (int i = 0; i < gridMaxY; i++)
         {
-            for (int j = 0; j < gridArr.GetLength(1); j++)
+            for (int j = 0; j < gridMaxX; j++)
             {
                 if (gridArr[i, j] == 2)
                 {
@@ -53,15 +58,6 @@ public class Grid
                     gridArr[p.y + i, p.x + j] = 2;
                 }
             }
-        }
-
-        for (int i = 0; i < gridArr.GetLength(0); i++)
-        {
-            for (int j = 0; j < gridArr.GetLength(1); j++)
-            {
-                Console.Write(gridArr[i, j]);
-            }
-            Console.WriteLine();
         }
 
         time++;
@@ -84,13 +80,41 @@ public class Grid
                 }
             }
         }
+        CheckClearRow();
+    }
+
+    public void CheckClearRow()
+    {
+        //1 => 0
+        for (int i = 0; i < gridMaxY; i++)
+        {
+            for (int j = 0; j < gridMaxX; j++)
+            {
+                if (gridArr[i, j] == 0)
+                {
+                    break;
+                }
+                else if (j == gridMaxX - 1)
+                {
+                    ClearRow(i);
+                }
+            }
+        }
+    }
+
+    public void ClearRow(int row)
+    {
+        for (int i = 0; i < gridMaxX; i++)
+        {
+            gridArr[row, i] = 0;
+        }
     }
 
     public bool GridCollision(Piece p)
     {
-        if (p.y >= gridArr.GetLength(0) - p.shape.GetLength(0))
+        if (p.y >= gridMaxX - p.shape.GetLength(0))
         {
-            deadPieceList.Add(p);
+            // deadPieceList.Add(p);
             UpdateGrid(p);
             return true;
         }
@@ -99,15 +123,15 @@ public class Grid
 
     public bool PieceCollision(Piece currP)
     {
-        for (int i = 0; i < gridArr.GetLength(0); i++)
+        for (int i = 0; i < gridMaxX; i++)
         {
-            for (int j = 0; j < gridArr.GetLength(1); j++)
+            for (int j = 0; j < gridMaxY; j++)
             {
-                if (gridArr[i, j] == 2)
+                if (gridArr[j, i] == 2)
                 {
-                    if (gridArr[i + 1, j] == 1)
+                    if (gridArr[j + 1, i] == 1)
                     {
-                        deadPieceList.Add(currP);
+                        // deadPieceList.Add(currP);
                         UpdateGrid(currP);
                         return true;
                     }
@@ -119,20 +143,56 @@ public class Grid
 
     public void DrawDeadPieces()
     {
-        for (int i = 0; i < deadPieceList.Count; i++)
+        // for (int i = 0; i < deadPieceList.Count; i++)
+        // {
+        //     deadPieceList[i].DrawPiece();
+        // }
+        for (int i = 0; i < gridMaxY; i++)
         {
-            deadPieceList[i].DrawPiece();
+            for (int j = 0; j < gridMaxX; j++)
+            {
+                if (gridArr[i, j] == 1)
+                {
+                    Raylib.DrawRectangle(i * 32 + 200, j * 32 + 200, 32, 32, Color.GRAY);
+                }
+            }
         }
     }
 
-    // public void DrawGrid()
-    // {
-    //     for (int i = 0; i < gridArr.GetLength(0); i++)
-    //     {
-    //         for (int j = 0; j < gridArr.GetLength(1); j++)
-    //         {
-    //             Raylib.DrawRectangle(x + j * 32, y + i * 32, 30, 30, Color.LIGHTGRAY);
-    //         }
-    //     }
-    // }
+    public bool IsRightPositionValid()
+    {
+        for (int i = 0; i < gridMaxX; i++)
+        {
+            for (int j = 0; j < gridMaxY; j++)
+            {
+                if (gridArr[j, i] == 2)
+                {
+                    if (gridArr[j, i + 1] == 1)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public bool IsLeftPositionValid()
+    {
+        for (int i = 0; i < gridMaxX; i++)
+        {
+            for (int j = 0; j < gridMaxY; j++)
+            {
+                if (gridArr[j, i] == 2)
+                {
+                    if (gridArr[j, i - 1] == 1)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 }

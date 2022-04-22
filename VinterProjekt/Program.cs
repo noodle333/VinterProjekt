@@ -10,7 +10,7 @@ Raylib.SetTargetFPS(60);
 
 Piece currentPiece = ph.GetRandomPiece();
 
-//TODO Graphics, Clear Line, Score system
+//TODO POLYMORFI, IF GRIDARR 1 == CEILING, LOSE. CLEAR ROW 
 
 while (!Raylib.WindowShouldClose())
 {

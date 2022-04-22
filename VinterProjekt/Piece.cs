@@ -37,7 +37,5 @@ public class Piece
                 }
             }
         }
-        //GetLength0 <| GetLength1
-        //klura ut längden och höjden av n 2d array.
     }
 }
