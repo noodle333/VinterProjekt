@@ -1,7 +1,6 @@
 ﻿using System;
 using Raylib_cs;
 
-Piece p = new Piece();
 PieceHandler ph = new PieceHandler();
 Grid grid = new Grid();
 
@@ -14,20 +13,20 @@ Piece currentPiece = ph.GetRandomPiece();
 
 while (!Raylib.WindowShouldClose())
 {
-
-    Raylib.BeginDrawing();
-    Raylib.ClearBackground(Color.BLUE);
-    Raylib.DrawRectangle(200, 200, 416, 640, Color.WHITE);
+    // grid.PrintArray();
     // grid.DrawGrid();
-    currentPiece.DrawPiece();
     currentPiece.Movement(grid);
     grid.Update(currentPiece);
-
-    if (grid.GridCollision(currentPiece) || grid.PieceCollision(currentPiece))
+    if (grid.PieceShouldDie(currentPiece))
     {
         currentPiece = ph.GetRandomPiece();
     }
 
+
+    Raylib.BeginDrawing();
+    Raylib.ClearBackground(Color.BLUE);
+    Raylib.DrawRectangle(200, 200, 416, 640, Color.WHITE);
+    currentPiece.DrawPiece();
     grid.DrawDeadPieces();
     Raylib.EndDrawing();
 }
