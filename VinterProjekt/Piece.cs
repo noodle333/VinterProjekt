@@ -6,16 +6,26 @@ public class Piece
     public int x, y;
     public int width, height;
     public int[,] shape;
+    public int shapeXLength, shapeYLength;
     public Rectangle rec;
 
+    public Piece(int x, int y, int[,] shape)
+    {
+        this.x = x;
+        this.y = y;
+        this.shape = shape;
+
+        shapeXLength = this.shape.GetLength(1);
+        shapeYLength = this.shape.GetLength(0);
+    }
 
     public void Movement(Grid grid)
     {
-        if (Raylib.IsKeyPressed(KeyboardKey.KEY_A) && x > 0 && grid.IsLeftPositionValid())
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_A) && x > 0 && grid.IsOffsetPositionValid(-1, 0))
         {
             x -= 1;
         }
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_D) && x < 13 - shape.GetLength(1) && grid.IsRightPositionValid()) //&& grid.IsPositionValid())
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_D) && x < 13 - shapeXLength && grid.IsOffsetPositionValid(1, 0)) //&& grid.IsPositionValid())
         {
             x += 1;
         }
@@ -27,9 +37,9 @@ public class Piece
 
     public void DrawPiece()
     {
-        for (int i = 0; i < shape.GetLength(0); i++)
+        for (int i = 0; i < shapeYLength; i++)
         {
-            for (int j = 0; j < shape.GetLength(1); j++)
+            for (int j = 0; j < shapeXLength; j++)
             {
                 if (shape[i, j] == 1)
                 {

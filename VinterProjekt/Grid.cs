@@ -31,31 +31,34 @@ public class Grid
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
-    int gridMaxX, gridMaxY;
+
+    private int gridXLength, gridYLength;
+
     public Grid()
     {
-        gridMaxX = gridArr.GetLength(1);
-        gridMaxY = gridArr.GetLength(0);
+        gridXLength = gridArr.GetLength(1);
+        gridYLength = gridArr.GetLength(0);
     }
+
     public void Update(Piece p)
     {
-        for (int i = 0; i < gridMaxY; i++)
+        for (int y = 0; y < gridYLength; y++)
         {
-            for (int j = 0; j < gridMaxX; j++)
+            for (int x = 0; x < gridXLength; x++)
             {
-                if (gridArr[i, j] == 2)
+                if (gridArr[y, x] == 2)
                 {
-                    gridArr[i, j] = 0;
+                    gridArr[y, x] = 0;
                 }
             }
         }
-        for (int i = 0; i < p.shape.GetLength(0); i++)
+        for (int y = 0; y < p.shapeYLength; y++)
         {
-            for (int j = 0; j < p.shape.GetLength(1); j++)
+            for (int x = 0; x < p.shapeXLength; x++)
             {
-                if (p.shape[i, j] == 1)
+                if (p.shape[y, x] == 1)
                 {
-                    gridArr[p.y + i, p.x + j] = 2;
+                    gridArr[p.y + y, p.x + x] = 2;
                 }
             }
         }
@@ -68,15 +71,15 @@ public class Grid
         }
     }
 
-    public void UpdateGrid(Piece p)
+    public void KillPiece(Piece p)
     {
-        for (int i = 0; i < p.shape.GetLength(0); i++)
+        for (int y = 0; y < p.shapeYLength; y++)
         {
-            for (int j = 0; j < p.shape.GetLength(1); j++)
+            for (int x = 0; x < p.shapeXLength; x++)
             {
-                if (p.shape[i, j] == 1)
+                if (p.shape[y, x] == 1)
                 {
-                    gridArr[p.y + i, p.x + j] = 1;
+                    gridArr[p.y + y, p.x + x] = 1;
                 }
             }
         }
@@ -86,17 +89,17 @@ public class Grid
     public void CheckClearRow()
     {
         //1 => 0
-        for (int i = 0; i < gridMaxY; i++)
+        for (int y = 0; y < gridYLength; y++)
         {
-            for (int j = 0; j < gridMaxX; j++)
+            for (int x = 0; x < gridXLength; x++)
             {
-                if (gridArr[i, j] == 0)
+                if (gridArr[y, x] == 0)
                 {
                     break;
                 }
-                else if (j == gridMaxX - 1)
+                else if (x == gridXLength - 1)
                 {
-                    ClearRow(i);
+                    ClearRow(y);
                 }
             }
         }
@@ -104,39 +107,27 @@ public class Grid
 
     public void ClearRow(int row)
     {
-        for (int i = 0; i < gridMaxX; i++)
+        for (int x = 0; x < gridXLength; x++)
         {
-            gridArr[row, i] = 0;
+            gridArr[row, x] = 0;
         }
     }
 
-    public bool GridCollision(Piece p)
+    public bool PieceShouldDie(Piece p)
     {
-        if (p.y >= gridMaxX - p.shape.GetLength(0))
+        if (GridCollision(p) || !IsOffsetPositionValid(0, 1))
         {
-            // deadPieceList.Add(p);
-            UpdateGrid(p);
+            KillPiece(p);
             return true;
         }
         return false;
     }
 
-    public bool PieceCollision(Piece currP)
+    public bool GridCollision(Piece p)
     {
-        for (int i = 0; i < gridMaxX; i++)
+        if (p.y >= gridYLength - p.shapeYLength)
         {
-            for (int j = 0; j < gridMaxY; j++)
-            {
-                if (gridArr[j, i] == 2)
-                {
-                    if (gridArr[j + 1, i] == 1)
-                    {
-                        // deadPieceList.Add(currP);
-                        UpdateGrid(currP);
-                        return true;
-                    }
-                }
-            }
+            return true;
         }
         return false;
     }
@@ -147,27 +138,27 @@ public class Grid
         // {
         //     deadPieceList[i].DrawPiece();
         // }
-        for (int i = 0; i < gridMaxY; i++)
+        for (int y = 0; y < gridYLength; y++)
         {
-            for (int j = 0; j < gridMaxX; j++)
+            for (int x = 0; x < gridXLength; x++)
             {
-                if (gridArr[i, j] == 1)
+                if (gridArr[y, x] == 1)
                 {
-                    Raylib.DrawRectangle(i * 32 + 200, j * 32 + 200, 32, 32, Color.GRAY);
+                    Raylib.DrawRectangle(x * 32 + 200, y * 32 + 200, 32, 32, Color.GRAY);
                 }
             }
         }
     }
 
-    public bool IsRightPositionValid()
+    public bool IsOffsetPositionValid(int xOffset, int yOffset)
     {
-        for (int i = 0; i < gridMaxX; i++)
+        for (int y = 0; y < gridYLength; y++)
         {
-            for (int j = 0; j < gridMaxY; j++)
+            for (int x = 0; x < gridXLength; x++)
             {
-                if (gridArr[j, i] == 2)
+                if (gridArr[y, x] == 2)
                 {
-                    if (gridArr[j, i + 1] == 1)
+                    if (gridArr[y + yOffset, x + xOffset] == 1)
                     {
                         return false;
                     }
@@ -177,22 +168,18 @@ public class Grid
         return true;
     }
 
-    public bool IsLeftPositionValid()
+    public void PrintArray()
     {
-        for (int i = 0; i < gridMaxX; i++)
+        Console.WriteLine();
+        Console.WriteLine();
+        for (int y = 0; y < gridYLength; y++)
         {
-            for (int j = 0; j < gridMaxY; j++)
+            for (int x = 0; x < gridXLength; x++)
             {
-                if (gridArr[j, i] == 2)
-                {
-                    if (gridArr[j, i - 1] == 1)
-                    {
-                        return false;
-                    }
-                }
+                Console.Write(gridArr[y, x] + " ");
             }
+            Console.WriteLine();
         }
-        return true;
     }
 
 }
