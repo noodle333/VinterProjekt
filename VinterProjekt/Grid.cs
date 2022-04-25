@@ -5,10 +5,8 @@ using Raylib_cs;
 
 public class Grid
 {
-    public int time;
-    // public List<Piece> deadPieceList = new List<Piece>();
-    //0 = unoccupied space, 1 = occupied space, 2 = temporary occupied space
-    int[,] gridArr = new int[,] {
+    private int time;
+    private int[,] gridArr = new int[,] {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -71,7 +69,7 @@ public class Grid
         }
     }
 
-    public void KillPiece(Piece p)
+    private void KillPiece(Piece p)
     {
         for (int y = 0; y < p.shapeYLength; y++)
         {
@@ -86,7 +84,7 @@ public class Grid
         CheckClearRow();
     }
 
-    public void CheckClearRow()
+    private void CheckClearRow()
     {
         //1 => 0
         for (int y = 0; y < gridYLength; y++)
@@ -105,7 +103,7 @@ public class Grid
         }
     }
 
-    public void ClearRow(int row)
+    private void ClearRow(int row)
     {
         for (int x = 0; x < gridXLength; x++)
         {
@@ -123,7 +121,7 @@ public class Grid
         return false;
     }
 
-    public bool GridCollision(Piece p)
+    private bool GridCollision(Piece p)
     {
         if (p.y >= gridYLength - p.shapeYLength)
         {
@@ -134,10 +132,6 @@ public class Grid
 
     public void DrawDeadPieces()
     {
-        // for (int i = 0; i < deadPieceList.Count; i++)
-        // {
-        //     deadPieceList[i].DrawPiece();
-        // }
         for (int y = 0; y < gridYLength; y++)
         {
             for (int x = 0; x < gridXLength; x++)
@@ -167,19 +161,4 @@ public class Grid
         }
         return true;
     }
-
-    public void PrintArray()
-    {
-        Console.WriteLine();
-        Console.WriteLine();
-        for (int y = 0; y < gridYLength; y++)
-        {
-            for (int x = 0; x < gridXLength; x++)
-            {
-                Console.Write(gridArr[y, x] + " ");
-            }
-            Console.WriteLine();
-        }
-    }
-
 }

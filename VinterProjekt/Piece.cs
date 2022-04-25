@@ -4,10 +4,8 @@ using Raylib_cs;
 public class Piece
 {
     public int x, y;
-    public int width, height;
     public int[,] shape;
     public int shapeXLength, shapeYLength;
-    public Rectangle rec;
 
     public Piece(int x, int y, int[,] shape)
     {

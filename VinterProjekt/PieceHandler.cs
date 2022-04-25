@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PieceHandler
 {
-    public Dictionary<string, int[,]> pieceList = new Dictionary<string, int[,]>();
+    private Dictionary<string, int[,]> pieceList = new Dictionary<string, int[,]>();
     Random gen = new Random();
 
     public PieceHandler()
@@ -54,10 +54,6 @@ public class PieceHandler
         List<int[,]> arr = new List<int[,]>(pieceList.Values);
 
         Piece ranPiece = new Piece(6, 0, arr[gen.Next(arr.Count)]);
-
-        //     x = 6,
-        //     y = 0,
-        // shape = arr[gen.Next(arr.Count)]
 
         return ranPiece;
     }
