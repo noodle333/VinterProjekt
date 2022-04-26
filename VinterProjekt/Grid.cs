@@ -6,6 +6,7 @@ using Raylib_cs;
 public class Grid
 {
     private int time;
+    //TETRIS GRID | 0 = UNOCCUPIED | 1 = OCCUPIED | 2 = ACTIVE PIECE OCCUPIED
     private int[,] gridArr = new int[,] {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -34,6 +35,7 @@ public class Grid
 
     public Grid()
     {
+        //EASY TO READ VARIABLES FOR GRID
         gridXLength = gridArr.GetLength(1);
         gridYLength = gridArr.GetLength(0);
     }
@@ -60,7 +62,7 @@ public class Grid
                 }
             }
         }
-
+        //TIMER TO MAKE PIECE FALL AT A GOOD PACE
         time++;
         if (time == 30)
         {
@@ -75,6 +77,7 @@ public class Grid
         {
             for (int x = 0; x < p.shapeXLength; x++)
             {
+                //UPDATES THE GRID WHEN A PIECE DIES
                 if (p.shape[y, x] == 1)
                 {
                     gridArr[p.y + y, p.x + x] = 1;
@@ -86,15 +89,16 @@ public class Grid
 
     private void CheckClearRow()
     {
-        //1 => 0
         for (int y = 0; y < gridYLength; y++)
         {
             for (int x = 0; x < gridXLength; x++)
             {
+                //IF ANY PART OF THE ROW IS EMPTY IT DOESN'T CLEAR
                 if (gridArr[y, x] == 0)
                 {
                     break;
                 }
+                //IF IT MAKES IT TO THE END, CLEAR ROW
                 else if (x == gridXLength - 1)
                 {
                     ClearRow(y);
@@ -113,6 +117,7 @@ public class Grid
 
     public bool PieceShouldDie(Piece p)
     {
+        //CHECKS COLLISION AGAINST GRID AND IF PIECE CAN MOVE DOWNWARD
         if (GridCollision(p) || !IsOffsetPositionValid(0, 1))
         {
             KillPiece(p);
@@ -136,6 +141,7 @@ public class Grid
         {
             for (int x = 0; x < gridXLength; x++)
             {
+                //DRAWS EVERY DEAD PIECES BLOCK INDIVIDUALLY TO MAKE CLEAR ROW SIMPLER
                 if (gridArr[y, x] == 1)
                 {
                     Raylib.DrawRectangle(x * 32 + 200, y * 32 + 200, 32, 32, Color.GRAY);
@@ -150,8 +156,10 @@ public class Grid
         {
             for (int x = 0; x < gridXLength; x++)
             {
+                //FINDS ACTIVE PIECE LOCATION
                 if (gridArr[y, x] == 2)
                 {
+                    //CHECK IF MOVEMENT DIRECTION IS OCCUPIED
                     if (gridArr[y + yOffset, x + xOffset] == 1)
                     {
                         return false;

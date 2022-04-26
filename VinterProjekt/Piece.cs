@@ -9,6 +9,7 @@ public class Piece
 
     public Piece(int x, int y, int[,] shape)
     {
+        //ASSIGNS VALUES FOR PIECE
         this.x = x;
         this.y = y;
         this.shape = shape;
@@ -19,15 +20,16 @@ public class Piece
 
     public void Movement(Grid grid)
     {
+        //CHECKS IF PIECE IS IN BOUNDS OF GRID AND IF THE SPACE IN THE DIRECTION IS UNOCCUPIED
         if (Raylib.IsKeyPressed(KeyboardKey.KEY_A) && x > 0 && grid.IsOffsetPositionValid(-1, 0))
         {
             x -= 1;
         }
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_D) && x < 13 - shapeXLength && grid.IsOffsetPositionValid(1, 0)) //&& grid.IsPositionValid())
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_D) && x < 13 - shapeXLength && grid.IsOffsetPositionValid(1, 0))
         {
             x += 1;
         }
-        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_S)) //is valid?
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_S))
         {
             y += 1;
         }

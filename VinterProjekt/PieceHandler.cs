@@ -6,6 +6,7 @@ public class PieceHandler
     private Dictionary<string, int[,]> pieceList = new Dictionary<string, int[,]>();
     Random gen = new Random();
 
+    //CREATES SHAPE FOR ALL PIECES
     public PieceHandler()
     {
         pieceList.Add("I", new int[,]

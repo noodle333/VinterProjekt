@@ -9,20 +9,19 @@ Raylib.SetTargetFPS(60);
 
 Piece currentPiece = ph.GetRandomPiece();
 
-//TODO POLYMORFI, IF GRIDARR 1 == CEILING, LOSE. CLEAR ROW 
+//TODO TRY CATCH ON KILLPIECE (GRID COLLISION SHOULD NOT BE HANDELED IN PIECE)
 
 while (!Raylib.WindowShouldClose())
 {
-    // grid.PrintArray();
-    // grid.DrawGrid();
     currentPiece.Movement(grid);
     grid.Update(currentPiece);
+    //CREATE NEW PIECE UPON DEATH OF A PIECE
     if (grid.PieceShouldDie(currentPiece))
     {
         currentPiece = ph.GetRandomPiece();
     }
 
-
+    //GRAPHICS
     Raylib.BeginDrawing();
     Raylib.ClearBackground(Color.BLUE);
     Raylib.DrawRectangle(200, 200, 416, 640, Color.WHITE);
