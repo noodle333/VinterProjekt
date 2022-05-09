@@ -54,7 +54,16 @@ public class PieceHandler
     {
         List<int[,]> arr = new List<int[,]>(pieceList.Values);
 
-        Piece ranPiece = new Piece(6, 0, arr[gen.Next(arr.Count)]);
+        Piece ranPiece;
+
+        if (gen.Next(0, 10) == 1)
+        {
+            ranPiece = new Piece(6, 0, arr[gen.Next(arr.Count)]);
+        }
+        else
+        {
+            ranPiece = new SpecialPiece(6, 0, arr[gen.Next(arr.Count)]);
+        }
 
         return ranPiece;
     }

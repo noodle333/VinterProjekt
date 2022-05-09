@@ -6,6 +6,7 @@ public class Piece
     public int x, y;
     public int[,] shape;
     public int shapeXLength, shapeYLength;
+    protected Color pieceC = Color.SKYBLUE;
 
     public Piece(int x, int y, int[,] shape)
     {
@@ -43,7 +44,7 @@ public class Piece
             {
                 if (shape[i, j] == 1)
                 {
-                    Raylib.DrawRectangle(x * 32 + 200 + j * 32, y * 32 + 200 + i * 32, 32, 32, Color.SKYBLUE);
+                    Raylib.DrawRectangle(x * 32 + 200 + j * 32, y * 32 + 200 + i * 32, 32, 32, pieceC);
                 }
             }
         }
